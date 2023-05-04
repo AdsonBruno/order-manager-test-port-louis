@@ -1,6 +1,5 @@
 const { rejects } = require('assert');
 const fs = require('fs');
-const path = require('path');
 
 class Order {
   constructor() {
@@ -17,6 +16,19 @@ class Order {
         }
         resolve(files);
       })
+    })
+  }
+
+  readOrder(path) {
+    return new Promise((resolve, rejects) => {
+      fs.readFile(path, 'utf-8', (err, data) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        err ? reject(err) : resolve(data);
+      })
+
     })
   }
 }
