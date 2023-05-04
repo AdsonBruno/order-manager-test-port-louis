@@ -11,9 +11,13 @@ async function run() {
 
   const orders = [];
 
-  const filePath = path.join(orderDir, data[2])
-  const conteudo = await order.readOrder(filePath);
-  orders.push({ name: data[2], dados: conteudo })
+
+  for (const element of data) {
+    const filePath = path.join(orderDir, element);
+    const conteudo = await order.readOrder(filePath);
+    orders.push({ name: element, dados: conteudo })
+  }
+
   console.log(orders);
 
 
