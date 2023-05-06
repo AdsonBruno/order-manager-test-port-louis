@@ -74,6 +74,3 @@ class OrderTeste {
     return true;
   }
 }
-
-const order = new OrderTeste(1, 'KMZ', 10, '3,50');
-console.log(order.validate()); // deve 
