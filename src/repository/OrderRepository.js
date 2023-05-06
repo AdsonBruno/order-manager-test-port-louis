@@ -1,7 +1,7 @@
 const orderTeste = require('../model/order');
 const path = require('path');
 
-class OrderRepositroy {
+class OrderRepository {
   constructor() {
     this.orders = [];
   }
@@ -24,3 +24,5 @@ class OrderRepositroy {
   }
 
 }
+
+module.exports = OrderRepository;
