@@ -20,6 +20,7 @@
 
 // const order = new OrderTeste(1, 'P01');
 // console.log(order.validate());
+
 class OrderTeste {
   constructor(número_item, código_produto, quantidade_produto, valor_unitário_produto) {
     this.número_item = número_item;
@@ -74,3 +75,5 @@ class OrderTeste {
     return true;
   }
 }
+
+module.exports = OrderTeste;
