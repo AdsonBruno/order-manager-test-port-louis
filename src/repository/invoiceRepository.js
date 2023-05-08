@@ -27,9 +27,9 @@ class InvoiceRepository {
         return invoice;
       });
       this.invoices = this.invoices.concat(invoices);
-      // console.log(this.invoices = this.invoices.concat(invoices))
-      // return invoices
     }
+
+    return this.invoices;
   }
 
   async findByOrderId(id_pedido) {
@@ -38,4 +38,15 @@ class InvoiceRepository {
   }
 }
 
-module.exports = InvoiceRepository;
+const orderDir = path.join(__dirname, '../../Notas');
+const repository = new InvoiceRepository();
+
+async function test() {
+  await repository.readInvoices(orderDir);
+  const result = await repository.findByOrderId(1);
+  console.log(result);
+}
+
+test();
+
+module.exports = new InvoiceRepository();
