@@ -1,26 +1,3 @@
-// class OrderTeste {
-//   constructor(item_number, product_code, product_quantity, product_unit_value) {
-//     this.item_number = item_number;
-//     this.product_code = product_code;
-//     this.product_quantity = product_quantity;
-//     this.product_unit_value = product_unit_value;
-//   }
-
-//   validate() {
-//     const keys = Object.keys(this);
-//     console.log(keys);
-//     if (keys.length !== 4 || !keys.includes('item_number') || !keys.includes('product_code') || !keys.includes('product_quantity') || !keys.includes('product_unit_value')) {
-//       console.log('erro')
-//       return false;
-//     }
-
-
-//   }
-// }
-
-// const order = new OrderTeste(1, 'P01');
-// console.log(order.validate());
-
 class OrderTeste {
   constructor(número_item, código_produto, quantidade_produto, valor_unitário_produto) {
     this.número_item = número_item;
@@ -67,7 +44,6 @@ class OrderTeste {
     }
 
     const value = valor_unitário_produto.replace(',', '.');
-
     if (isNaN(parseFloat(value) || parseFloat(value) <= 0)) {
       return false;
     }
