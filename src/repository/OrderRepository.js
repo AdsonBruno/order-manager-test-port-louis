@@ -33,6 +33,8 @@ class OrderRepository {
       console.log(orders);
       this.orders = this.orders.concat(orders);
     }
+
+    return this.orders;
   }
 
 
