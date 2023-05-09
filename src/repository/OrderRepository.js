@@ -18,7 +18,12 @@ class OrderRepository {
       const orderData = content
         .trim()
         .split('\n')
-        .map((line) => JSON.parse(line));
+        .map((line) => {
+          let json = line;
+          let jsonWithDot = json.replace(/,\s*(\d+)(\D)/g, '.$1$2');
+          let order = JSON.parse(jsonWithDot);
+          return order;
+        })
 
       const orders = orderData.map((orderData) => {
         const order = new OrderTeste(
@@ -30,11 +35,10 @@ class OrderRepository {
         return order;
       }
       );
-      console.log(orders);
       this.orders = this.orders.concat(orders);
     }
 
-    return this.orders;
+    return this.orders
   }
 
 
