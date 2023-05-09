@@ -17,7 +17,12 @@ class InvoiceRepository {
       const invoicesData = content
         .trim()
         .split('\n')
-        .map((line) => JSON.parse(line));
+        .map((line) => {
+          let json = line;
+          let jsonWithDot = json.replace(/,\s*(\d+)(\D)/g, '.$1$2');
+          let order = JSON.parse(jsonWithDot);
+          return order;
+        })
       const invoices = invoicesData.map((invoiceData) => {
         const invoice = new Invoice(
           invoiceData.id_pedido,
@@ -37,16 +42,5 @@ class InvoiceRepository {
     return Promise.resolve(result);
   }
 }
-
-const orderDir = path.join(__dirname, '../../Notas');
-const repository = new InvoiceRepository();
-
-async function test() {
-  await repository.readInvoices(orderDir);
-  const result = await repository.findByOrderId(1);
-  console.log(result);
-}
-
-test();
 
 module.exports = new InvoiceRepository();
