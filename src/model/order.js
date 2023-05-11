@@ -1,55 +1,47 @@
-class OrderTeste {
-  constructor(número_item, código_produto, quantidade_produto, valor_unitário_produto) {
-    this.número_item = número_item;
-    this.código_produto = código_produto;
-    this.quantidade_produto = quantidade_produto;
-    this.valor_unitário_produto = valor_unitário_produto;
+class Order {
+
+  constructor(orderItems) {
+    this.validate(orderItems);
+    this.checkSameItemInOrder(orderItems);
+    this._orderItems = orderItems;
   }
 
-  validate() {
-    const keys = Object.keys(this);
+  get orderItems() {
+    return this._orderItems;
+  }
 
-    if (keys.length !== 4) {
-      return false;
-    }
+  validate(orderItems) {
+    for (orderItem of orderItems) {
+      if (
+        typeof orderItem.número_item !== 'number' ||
+        typeof orderItem.código_produto !== 'string',
+        typeof orderItem.quantidade_produto !== 'number' ||
+        typeof orderItem.valor_unitário_produto !== 'string'
 
-    const expectedKeys = [
-      'número_item',
-      'código_produto',
-      'quantidade_produto',
-      'valor_unitário_produto'
-    ];
+      ) {
+        throw new Error('The property value type is invalid')
+      }
 
-    for (const key of expectedKeys) {
-      if (!keys.includes(key)) {
-        console.log(`A chave ${key} não foi encontrada.`);
-        return false;
+      if (orderItem.número_item <= 0) {
+        throw new Error('The number item shouldbe greather than 0')
+      }
+
+      if (orderItem.quantidade_produto <= 0) {
+        throw new Error('The number item shouldbe greather than 0')
       }
     }
+  }
 
-    const { número_item, código_produto, quantidade_produto, valor_unitário_produto } = this;
+  checkSameItemInOrder(orderItems) {
+    let setItems = new Set();
 
-    if (
-      typeof número_item !== 'number' ||
-      typeof código_produto !== 'string',
-      typeof quantidade_produto !== 'number' ||
-      typeof valor_unitário_produto !== 'string'
-
-    ) {
-      return false;
+    for (item of orderItems) {
+      setItems.add(item.número_item)
     }
-
-    if (número_item <= 0 || quantidade_produto <= 0) {
-      return false;
+    if (Array.from(setItems).length !== orderItems.length) {
+      throw new Error('Exist more then one item with same número item')
     }
-
-    const value = valor_unitário_produto.replace(',', '.');
-    if (isNaN(parseFloat(value) || parseFloat(value) <= 0)) {
-      return false;
-    }
-
-    return true;
   }
 }
 
-module.exports = OrderTeste;
+module.exports = Order;
