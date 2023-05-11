@@ -1,7 +1,7 @@
 const OrderTeste = require('../model/order');
 const Invoice = require('../model/invoice');
 const InvoiceRepository = require('../repository/invoiceRepository');
-const OrderRepository = require('../repository/OrderRepository');
+const OrderRepository = require('../repository/orderRepository');
 const path = require('path');
 const fs = require('fs');
 
