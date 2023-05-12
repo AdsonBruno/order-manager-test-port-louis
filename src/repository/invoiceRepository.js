@@ -1,40 +1,36 @@
 const fs = require('fs');
 const path = require('path');
-const Invoice = require('../entities/invoice');
 
 class InvoiceRepository {
-  constructor() {
+  constructor(directoryPath) {
     this.invoices = [];
+    this.readInvoices(directoryPath);
   }
 
   async readInvoices(directoryPath) {
     const files = await fs.promises.readdir(directoryPath);
     const invoiceFiles = files.filter((file) => path.extname(file) === '.txt');
+    const notes = new Map();
 
-    for (const file of invoiceFiles) {
+    for (let file of invoiceFiles) {
+      let invoiceId = file[1];
       const filePath = path.join(directoryPath, file);
-      const content = await fs.promises.readFile(filePath, 'utf-8');
-      const invoicesData = content
+      const noteContent = await fs.promises.readFile(filePath, 'utf-8');
+      const invoicesData = noteContent
         .trim()
         .split('\n')
         .map((line) => {
           let json = line;
-          let jsonWithDot = json.replace(/,\s*(\d+)(\D)/g, '.$1$2');
-          let order = JSON.parse(jsonWithDot);
-          return order;
+          let orderNote = JSON.parse(json);
+          return orderNote;
         })
-      const invoices = invoicesData.map((invoiceData) => {
-        const invoice = new Invoice(
-          invoiceData.id_pedido,
-          invoiceData.número_item,
-          invoiceData.quantidade_produto
-        );
-        return invoice;
-      });
-      this.invoices = this.invoices.concat(invoices);
-    }
 
-    return this.invoices;
+      if (!notes.has(invoiceId)) {
+        notes.set(+invoiceId, invoicesData);
+      }
+    }
+    return notes;
+
   }
 
   async findByOrderId(id_pedido) {
@@ -43,4 +39,4 @@ class InvoiceRepository {
   }
 }
 
-module.exports = new InvoiceRepository();
+module.exports = InvoiceRepository;
