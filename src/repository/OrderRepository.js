@@ -1,7 +1,7 @@
 const orderTeste = require('../model/order');
 const path = require('path');
 const fs = require('fs');
-const OrderTeste = require('../model/order');
+const Order = require('../entities/order');
 
 class OrderRepository {
   constructor() {
@@ -26,7 +26,7 @@ class OrderRepository {
         })
 
       const orders = orderData.map((orderData) => {
-        const order = new OrderTeste(
+        const order = new Order(
           orderData.número_item,
           orderData.código_produto,
           orderData.quantidade_produto,
@@ -47,4 +47,4 @@ class OrderRepository {
 
 }
 
-module.exports = new OrderRepository();
+module.exports = OrderRepository;
