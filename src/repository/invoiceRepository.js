@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const Invoice = require('../model/invoice');
+const Invoice = require('../entities/invoice');
 
 class InvoiceRepository {
   constructor() {
