@@ -28,7 +28,6 @@ class OrderRepository {
 
       pedidos.set(+fileOrderId, orderData)
     }
-
     return pedidos
   }
 
