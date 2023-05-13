@@ -4,6 +4,7 @@ class Invoice {
   }
 
   validateInvoice(invoices) {
+    let invoice;
     for (invoice of invoices) {
       if (typeof invoice.id_pedido !== 'number' || typeof invoice.id_pedido !== 'string') {
         throw new Error('The type of id_pedido property is invalid');

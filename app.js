@@ -1,27 +1,57 @@
-const Order = require('./src/presentation/order');
+const Order = require('./src/entities/order');
+const Invoice = require('./src/entities/invoice');
+const OrderRepository = require('./src/repository/orderRepository');
+const InvoiceRepository = require('./src/repository/invoiceRepository');
+const checkInviceItemsInOrders = require('./src/service/checkInvoiceItemsInOrders')
 const path = require('path');
 const fs = require('fs');
 const { error } = require('console');
 
-const orderDir = path.join(__dirname, 'Pedidos/');
+const orderDir = path.join(__dirname, './Pedidos/');
+const invoiceDir = path.join(__dirname, './Notas/');
+
+function valiadteOrders(ordersMap) {
+  ordersMap.forEach(order => {
+    try {
+      new Order(order);
+    } catch (error) {
+      console.log(error)
+    }
+  })
+}
+
+function valiadteInvoices(invoicesMap) {
+  invoicesMap.forEach(invoice => {
+    try {
+      new Invoice(invoice);
+    } catch (error) {
+      console.log(error)
+    }
+  })
+}
+
+
 
 async function run() {
-  const order = new Order();
-  const data = await order.readOrderFileName(orderDir);
+  try {
+    const orderRepository = new OrderRepository()
+    const invoiceRepository = new InvoiceRepository()
+    const ordersMap = await orderRepository.readOrders(orderDir);
+    const invoicesMap = await invoiceRepository.readInvoices(invoiceDir);
 
-  const orders = [];
+    valiadteOrders(ordersMap)
+    valiadteInvoices(invoicesMap)
+    checkInviceItemsInOrders(ordersMap, invoicesMap)
 
 
-  for (const element of data) {
-    const filePath = path.join(orderDir, element);
-    const conteudo = await order.readOrder(filePath);
-    orders.push({ name: element, dados: conteudo })
+
+  } catch (error) {
+    //TODO: Melhoria: criar um log para armazerar os erros em uma ferramenta de monitoramento
+    console.log(error)
   }
-
-  console.log(orders);
 
 
 
 }
 
-run().catch(console.log(error))
+run()

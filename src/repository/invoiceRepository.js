@@ -2,9 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 class InvoiceRepository {
-  constructor(directoryPath) {
+  constructor() {
     this.invoices = [];
-    this.readInvoices(directoryPath);
   }
 
   async readInvoices(directoryPath) {
@@ -31,11 +30,6 @@ class InvoiceRepository {
     }
     return notes;
 
-  }
-
-  async findByOrderId(id_pedido) {
-    const result = this.invoices.filter(invoice => invoice.order_id === id_pedido);
-    return Promise.resolve(result);
   }
 }
 

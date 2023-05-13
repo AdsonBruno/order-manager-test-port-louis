@@ -4,7 +4,6 @@ const fs = require('fs');
 class OrderRepository {
   constructor(orderDir) {
     this.orders = [];
-    this.readOrders(orderDir)
   }
 
   async readOrders(orderDir) {
