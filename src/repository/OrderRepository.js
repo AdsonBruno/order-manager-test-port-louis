@@ -1,19 +1,20 @@
-const orderTeste = require('../model/order');
 const path = require('path');
 const fs = require('fs');
-const Order = require('../entities/order');
 
 class OrderRepository {
-  constructor() {
+  constructor(orderDir) {
     this.orders = [];
+    this.readOrders(orderDir)
   }
 
-  async readOrders(directoryPath) {
-    const files = await fs.promises.readdir(directoryPath);
+  async readOrders(orderDir) {
+    const files = await fs.promises.readdir(orderDir);
     const orderFiles = files.filter((file) => path.extname(file) === '.txt');
+    const pedidos = new Map();
 
-    for (const file of orderFiles) {
-      const filePath = path.join(directoryPath, file);
+    for (let file of orderFiles) {
+      let fileOrderId = file[1];
+      const filePath = path.join(orderDir, file);
       const content = await fs.promises.readFile(filePath, 'utf-8');
       const orderData = content
         .trim()
@@ -25,26 +26,15 @@ class OrderRepository {
           return order;
         })
 
-      const orders = orderData.map((orderData) => {
-        const order = new Order(
-          orderData.número_item,
-          orderData.código_produto,
-          orderData.quantidade_produto,
-          orderData.valor_unitário_produto
-        );
-        return order;
-      }
-      );
-      this.orders = this.orders.concat(orders);
+      pedidos.set(+fileOrderId, orderData)
     }
 
-    return this.orders
+    return pedidos
   }
 
   get() {
     return this.orders;
   }
-
 }
 
 module.exports = OrderRepository;
